@@ -9,8 +9,8 @@ const getMsgs = () => Array.from(msg).reverse();
 
 // feel free to take out, this just seeds the server with at least one message
 msg.push({
-  user: "brian",
-  text: "hi",
+  user: "ben",
+  text: "hello",
   time: Date.now(),
 });
 
@@ -27,7 +27,7 @@ app.get("/poll", function (req, res) {
 });
 
 app.post("/poll", function (req, res) {
-  const { user, post } = req.body;
+  const { user, text } = req.body;
 
   msg.push({
     user,
