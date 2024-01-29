@@ -33,9 +33,11 @@ server.on("stream", (stream, headers) => {
       "content-type": "application/json; charset=utf-8", // Fix typo here
     });
     stream.write(JSON.stringify({ msgs: getMsgs() })); // Move this line here
-    stream.end(); // End the response
+    connections.push(stream)
+    // stream.end(); // End the response
     stream.on("close", () => {
       console.log("Disconnected " + stream.id);
+      connections = connections.filter(s => s !== stream);
     });
   }
 });
@@ -62,7 +64,10 @@ server.on("request", async (req, res) => {
       
       // Respond with success
       res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end("Message received successfully.");
+      // res.end("Message received successfully.");
+      connections.forEach((stream)=>{
+        stream.write(JSON.stringify({ msg: getMsgs() }))
+      })
     } catch (error) {
       // Respond with error
       res.writeHead(400, { "Content-Type": "text/plain" });

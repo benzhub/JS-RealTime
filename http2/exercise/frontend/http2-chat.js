@@ -58,7 +58,8 @@ async function getNewMsgs() {
     if(chunk){
       try {
         const json = JSON.parse(chunk);
-        allChat = json.msgs;
+        allChat = json.msgs && json.msgs.length > 0 ? json.msgs : json.msg;
+        console.log(allChat)
         render();
       } catch (error) {
         console.error("parse error", error)
